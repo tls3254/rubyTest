@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   post "/users/signup", to: "users#signup"
   post "/auth/signin", to: "users#signin"
   post "/contents", to: "contents#create"
-  get "/content", to: "content#show"
+  get "/content", to: "contents#show"
   put "/contents/:id", to: "contents#update"
   delete "/contents/:id", to: "contents#destroy"
   resources :users

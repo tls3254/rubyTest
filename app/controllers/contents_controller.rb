@@ -1,5 +1,5 @@
 class ContentsController < ApplicationController
-  before_action :set_content, only: [:show, :update, :destroy]
+  before_action :set_content, only: [:update, :destroy]
   protect_from_forgery except: :create
   def create
     content = Content.create(
@@ -15,10 +15,17 @@ class ContentsController < ApplicationController
   end
 
   def show
-    
+    @contents = Content.all
+    render json: @contents
   end
   def update
   end
   def destroy
+  end
+
+  def set_content
+    @content = Content.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'Content not found' }, status: :not_found
   end
 end
