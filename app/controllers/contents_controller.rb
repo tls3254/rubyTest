@@ -1,6 +1,6 @@
 class ContentsController < ApplicationController
   before_action :set_content, only: [:update, :destroy]
-  protect_from_forgery except: [:create, :update]
+  protect_from_forgery except: [:create, :update, :destroy]
   def create
     content = Content.create(
       title: params[:title],
@@ -32,6 +32,15 @@ class ContentsController < ApplicationController
   end
 
   def destroy
+    if @content.user_id == current_user.id
+      if @content.destroy
+        render json: { message: 'Content successfully deleted' }, status: :ok
+      else
+        render json: { errors: @content.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: 'You are not authorized to delete this content' }, status: :forbidden
+    end
   end
 
   def set_content
